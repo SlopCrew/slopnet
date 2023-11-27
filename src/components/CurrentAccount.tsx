@@ -22,10 +22,12 @@ export default function CurrentAccount() {
     <li>
       <details role="list">
         <summary aria-haspopup="listbox" role="link" className="currentAccount">
-          <img
-            src={`https://cdn.discordapp.com/avatars/${cachedMe.id}/${cachedMe.avatar}.png`}
-            alt={cachedMe.username}
-          />
+          {cachedMe.avatar != null && (
+            <img
+              src={`https://cdn.discordapp.com/avatars/${cachedMe.id}/${cachedMe.avatar}.png`}
+              alt={cachedMe.username}
+            />
+          )}
 
           {cachedMe.username}
         </summary>

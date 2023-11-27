@@ -72,7 +72,7 @@ export default function Redirect() {
   }, []);
 
   if (result != null && !result.error) {
-    navigate("/");
+    navigate("/settings");
   }
 
   return result == null ? (
