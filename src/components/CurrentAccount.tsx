@@ -2,6 +2,7 @@ import React from "react";
 import { useAuthStore } from "../stores";
 import { getMe } from "../api/auth";
 import { Link } from "react-router-dom";
+import Avatar from "./Avatar";
 
 export default function CurrentAccount() {
   const token = useAuthStore((state) => state.key);
@@ -22,13 +23,7 @@ export default function CurrentAccount() {
     <li>
       <details role="list">
         <summary aria-haspopup="listbox" role="link" className="currentAccount">
-          {cachedMe.avatar != null && (
-            <img
-              src={`https://cdn.discordapp.com/avatars/${cachedMe.id}/${cachedMe.avatar}.png`}
-              alt={cachedMe.username}
-            />
-          )}
-
+          <Avatar person={cachedMe} />
           {cachedMe.username}
         </summary>
 

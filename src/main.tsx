@@ -6,10 +6,19 @@ import "@picocss/pico/css/pico.min.css";
 
 import Root from "./App.tsx";
 import ErrorPage from "./routes/Error.tsx";
+import _404 from "./routes/404.tsx";
+
 import Index from "./routes/Index.tsx";
 import Link from "./routes/Link.tsx";
 import Redirect from "./routes/Redirect.tsx";
 import Settings from "./routes/Settings.tsx";
+
+import Crews from "./routes/crews/Crews.tsx";
+import CrewsCreate from "./routes/crews/Create.tsx";
+import Crew from "./routes/crews/Crew.tsx";
+import CrewSettings from "./routes/crews/CrewSettings.tsx";
+
+import { crewsLoader, crewLoader } from "./routes/loaders.ts";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +30,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Index />
       },
+
       {
         path: "link",
         element: <Link />
@@ -32,6 +42,31 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: <Settings />
+      },
+
+      {
+        path: "crews",
+        loader: crewsLoader,
+        element: <Crews />
+      },
+      {
+        path: "crews/create",
+        element: <CrewsCreate />
+      },
+      {
+        path: "crews/:id",
+        loader: crewLoader,
+        element: <Crew />
+      },
+      {
+        path: "crews/:id/settings",
+        loader: crewLoader,
+        element: <CrewSettings />
+      },
+
+      {
+        path: "*",
+        element: <_404 />
       }
     ]
   }

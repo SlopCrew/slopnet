@@ -14,6 +14,10 @@ export default function Root() {
         </ul>
 
         <ul>
+          <li>
+            <Link to="/crews">Crews</Link>
+          </li>
+
           <CurrentAccount />
         </ul>
       </nav>

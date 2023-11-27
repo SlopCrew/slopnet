@@ -1,5 +1,18 @@
 :root {
-  --primary: #43a047;
+  --primary: #43a047 !important;
+  --primary-hover: #388e3c !important;
+  --primary-focus: rgba(67, 160, 71, 0.125) !important;
+  --primary-inverse: #fff !important;
+
+  --warning: #ffb300;
+  --warning-hover: #ffa000;
+  --warning-focus: rgba(255, 179, 0, 0.125);
+  --warning-inverse: rgba(0, 0, 0, 0.75);
+
+  --danger: #e53935;
+  --danger-hover: #d32f2f;
+  --danger-focus: rgba(229, 57, 53, 0.125);
+  --danger-inverse: #fff;
 }
 
 .currentAccount {
@@ -8,10 +21,15 @@
   height: 3rem;
 }
 
-.currentAccount img {
+.avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 25%;
+}
+
+.currentAccount .avatar {
   width: 2rem;
   height: 2rem;
-  border-radius: 25%;
 }
 
 .authKey {
@@ -23,7 +41,7 @@
 }
 
 /* Make text not double clickable */
-.authKey code {
+.hiddenCode code {
   user-select: none;
 }
 
@@ -39,4 +57,72 @@
   100% {
     color: var(--color);
   }
+}
+
+.important {
+  padding: calc(var(--block-spacing-vertical) / 2)
+    var(--block-spacing-horizontal);
+  margin: calc(var(--block-spacing-vertical) / 2) 0;
+}
+
+.important p {
+  color: var(--contrast);
+  margin: 0;
+}
+
+.warning {
+  --background-color: var(--warning) !important;
+  --card-background-color: var(--warning) !important;
+  --border-color: var(--warning) !important;
+  --color: var(--warning-inverse) !important;
+}
+
+.danger {
+  --background-color: var(--danger) !important;
+  --card-background-color: var(--danger) !important;
+  --border-color: var(--danger) !important;
+  --color: var(--danger-inverse) !important;
+}
+
+.normalWidthButton {
+  width: initial;
+}
+
+/* Shitty hack for tooltips on disabled buttons */
+.tooltipHack {
+  display: inline-block;
+  border: none !important;
+}
+
+.tooltipHack button {
+  margin-bottom: 0 !important;
+}
+
+.smolPadding h1,
+.smolPadding h2,
+.smolPadding h3,
+.smolPadding h4,
+.smolPadding h5,
+.smolPadding h6 {
+  margin-bottom: calc(var(--typography-spacing-vertical) / 2);
+}
+
+.buttonGallery button,
+.buttonGallery a[role="button"] {
+  margin-right: 1rem;
+}
+
+.crewAvatar .avatar {
+  margin-right: 1rem;
+}
+
+.inviteCode {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.inviteCode input {
+  width: 0;
+  flex-grow: 1;
 }

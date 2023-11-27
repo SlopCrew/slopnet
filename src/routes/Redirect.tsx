@@ -19,8 +19,6 @@ export default function Redirect() {
   const [result, setResult] = React.useState<ExchangeResult | null>(null);
 
   React.useEffect(() => {
-    console.log("Redirect useEffect");
-
     async function run() {
       const query = new URLSearchParams(window.location.search);
       const code = query.get("code");
