@@ -1,11 +1,42 @@
 :root {
-  font-family: "Inter", sans-serif;
+  --primary: #43a047;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  min-width: 100vw;
-  min-height: 100vh;
+.currentAccount {
+  align-items: center;
+  gap: 0.5rem;
+  height: 3rem;
+}
+
+.currentAccount img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 25%;
+}
+
+.authKey {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+}
+
+/* Make text not double clickable */
+.authKey code {
+  user-select: none;
+}
+
+/* When clicked, change color to primary, then fade out */
+.copyClicked {
+  animation: copyClicked 0.5s ease-in-out;
+}
+
+@keyframes copyClicked {
+  0% {
+    color: var(--primary);
+  }
+  100% {
+    color: var(--color);
+  }
 }
