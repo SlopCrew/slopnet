@@ -24,11 +24,11 @@ function MembersActions({
     return <td></td>;
   }
 
-  const canDemote = crew.super_owner == me?.id;
+  const canManageRank = crew.super_owner == me?.id;
 
   return (
     <td className="buttonGallery">
-      {canDemote &&
+      {canManageRank &&
         (member.owner ? (
           <button
             onClick={async () => {
