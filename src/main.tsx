@@ -21,7 +21,8 @@ import CrewSettings from "./routes/crews/CrewSettings.tsx";
 import {
   crewsLoader,
   crewLoader,
-  crewSettingsLoader
+  crewSettingsLoader,
+  settingsLoader
 } from "./routes/loaders.ts";
 
 const router = createBrowserRouter([
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path: "settings",
+        loader: settingsLoader,
         element: <Settings />
       },
 

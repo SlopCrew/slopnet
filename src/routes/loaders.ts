@@ -1,5 +1,10 @@
 import { defer } from "react-router-typesafe";
-import { getCrew, getCrews, getInvites } from "../api/crew";
+import {
+  getCrew,
+  getCrews,
+  getInvites,
+  getRepresentingCrew
+} from "../api/crew";
 import { CrewResponse, SimpleCrewResponse } from "../api/types";
 import { Params } from "react-router-dom";
 
@@ -25,7 +30,7 @@ export async function crewLoader({ params }: { params: Params<"id"> }) {
   });
 }
 
-export type CrewSettingsData = {
+export type CrewSettingsLoaderData = {
   crew: Promise<CrewResponse | null>;
   invites: Promise<string[]>;
 };
@@ -33,8 +38,20 @@ export type CrewSettingsData = {
 export async function crewSettingsLoader({ params }: { params: Params<"id"> }) {
   if (params.id == null) throw new Response("Not Found", { status: 404 });
 
-  return defer<CrewSettingsData>({
+  return defer<CrewSettingsLoaderData>({
     crew: getCrew(params.id),
     invites: getInvites(params.id)
+  });
+}
+
+export type SettingsLoaderData = {
+  crews: Promise<SimpleCrewResponse[]>;
+  representingCrew: Promise<string | null>;
+};
+
+export async function settingsLoader() {
+  return defer<SettingsLoaderData>({
+    crews: getCrews().then((res) => res ?? []),
+    representingCrew: getRepresentingCrew()
   });
 }

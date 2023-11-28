@@ -272,3 +272,41 @@ export async function nukeItFromOrbit(
   if (!req.ok) return req;
   return { ok: true, value: null };
 }
+
+export async function getRepresentingCrew(): Promise<string | null> {
+  const token = useAuthStore.getState().key;
+  if (token == null) return null;
+
+  const req = await tryFetch(
+    `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/represent`,
+    {
+      headers: {
+        Authorization: token
+      }
+    }
+  );
+
+  console.log(req);
+  if (!req.ok) return null;
+  if (req.value.status === 204) return null;
+  return await req.value.text();
+}
+
+export async function setRepresentingCrew(
+  crew: string | null
+): Promise<boolean> {
+  const token = useAuthStore.getState().key;
+  if (token == null) return false;
+
+  let url = `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/represent`;
+  if (crew != null) url += `?id=${crew}`;
+
+  const req = await tryFetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: token
+    }
+  });
+
+  return req.ok;
+}
