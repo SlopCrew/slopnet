@@ -24,29 +24,32 @@ function MembersActions({
     return <td></td>;
   }
 
+  const canDemote = crew.super_owner == me?.id;
+
   return (
     <td className="buttonGallery">
-      {member.owner ? (
-        <button
-          onClick={async () => {
-            const req = await demote(crew.id, member.id);
-            if (req.ok) revalidator.revalidate();
-          }}
-          className="normalWidthButton danger"
-        >
-          Demote
-        </button>
-      ) : (
-        <button
-          onClick={async () => {
-            const req = await promote(crew.id, member.id);
-            if (req.ok) revalidator.revalidate();
-          }}
-          className="normalWidthButton warning"
-        >
-          Promote
-        </button>
-      )}
+      {canDemote &&
+        (member.owner ? (
+          <button
+            onClick={async () => {
+              const req = await demote(crew.id, member.id);
+              if (req.ok) revalidator.revalidate();
+            }}
+            className="normalWidthButton danger"
+          >
+            Demote
+          </button>
+        ) : (
+          <button
+            onClick={async () => {
+              const req = await promote(crew.id, member.id);
+              if (req.ok) revalidator.revalidate();
+            }}
+            className="normalWidthButton warning"
+          >
+            Promote
+          </button>
+        ))}
 
       {!member.owner && (
         <button

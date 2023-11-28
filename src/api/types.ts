@@ -12,6 +12,7 @@ export type SimpleCrewResponse = {
   id: string;
   name: string;
   tag: string;
+  super_owner: string;
 };
 
 export type CrewResponse = SimpleCrewResponse & {
