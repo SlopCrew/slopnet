@@ -7,11 +7,14 @@ import { CrewMember, CrewResponse } from "../../api/types";
 import { useAuthStore } from "../../stores";
 import Avatar from "../../components/Avatar";
 import { useRequiredAuth } from "../../util";
+import { demote, kick, leave, promote } from "../../api/crew";
 
 function MembersActions({
+  crew,
   me,
   member
 }: {
+  crew: CrewResponse;
   me?: CrewMember;
   member: CrewMember;
 }) {
@@ -26,7 +29,8 @@ function MembersActions({
       {member.owner ? (
         <button
           onClick={async () => {
-            revalidator.revalidate();
+            const req = await demote(crew.id, member.id);
+            if (req.ok) revalidator.revalidate();
           }}
           className="normalWidthButton danger"
         >
@@ -35,7 +39,8 @@ function MembersActions({
       ) : (
         <button
           onClick={async () => {
-            revalidator.revalidate();
+            const req = await promote(crew.id, member.id);
+            if (req.ok) revalidator.revalidate();
           }}
           className="normalWidthButton warning"
         >
@@ -43,17 +48,27 @@ function MembersActions({
         </button>
       )}
 
-      <button onClick={() => {}} className="normalWidthButton danger">
-        Kick
-      </button>
+      {!member.owner && (
+        <button
+          onClick={async () => {
+            const req = await kick(crew.id, member.id);
+            if (req.ok) revalidator.revalidate();
+          }}
+          className="normalWidthButton danger"
+        >
+          Kick
+        </button>
+      )}
     </td>
   );
 }
 
 function MembersTable({
+  crew,
   me,
   members
 }: {
+  crew: CrewResponse;
   me?: CrewMember;
   members: CrewMember[];
 }) {
@@ -81,7 +96,9 @@ function MembersTable({
                 )}
               </td>
 
-              {isOwner && <MembersActions me={me} member={member} />}
+              {isOwner && (
+                <MembersActions crew={crew} me={me} member={member} />
+              )}
             </tr>
           );
         })}
@@ -97,6 +114,8 @@ function LeaveCrewButton({
   crew: CrewResponse;
   me?: CrewMember;
 }) {
+  const navigate = useNavigate();
+
   const owners = crew.members.filter((x) => x.owner);
 
   // This is implemented serverside as well
@@ -114,9 +133,16 @@ function LeaveCrewButton({
   }
 
   return (
-    <div className="tooltipHack" data-tooltip={tooltip} data-placement="right">
+    <div
+      className="tooltipHack"
+      data-tooltip={tooltip === "" ? null : tooltip}
+      data-placement="right"
+    >
       <button
-        onClick={() => {}}
+        onClick={async () => {
+          const req = await leave(crew.id);
+          if (req.ok) navigate("/crews");
+        }}
         role="button"
         className="normalWidthButton danger"
         disabled={!canLeave}
@@ -162,7 +188,7 @@ function CrewInner({ crew }: { crew: CrewResponse }) {
 
       <section className="smolPadding">
         <h2>Members</h2>
-        <MembersTable me={me} members={members} />
+        <MembersTable crew={crew} me={me} members={members} />
       </section>
     </>
   );

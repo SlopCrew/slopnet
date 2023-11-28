@@ -18,7 +18,11 @@ import CrewsCreate from "./routes/crews/Create.tsx";
 import Crew from "./routes/crews/Crew.tsx";
 import CrewSettings from "./routes/crews/CrewSettings.tsx";
 
-import { crewsLoader, crewLoader } from "./routes/loaders.ts";
+import {
+  crewsLoader,
+  crewLoader,
+  crewSettingsLoader
+} from "./routes/loaders.ts";
 
 const router = createBrowserRouter([
   {
@@ -60,7 +64,7 @@ const router = createBrowserRouter([
       },
       {
         path: "crews/:id/settings",
-        loader: crewLoader,
+        loader: crewSettingsLoader,
         element: <CrewSettings />
       },
 

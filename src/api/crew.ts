@@ -6,7 +6,7 @@ export async function getCrews() {
   const token = useAuthStore.getState().key;
   if (token == null) return null;
 
-  const req = await fetch(
+  const req = await tryFetch(
     `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/crews`,
     {
       headers: {
@@ -16,7 +16,7 @@ export async function getCrews() {
   );
 
   if (!req.ok) return null;
-  const res: SimpleCrewResponse[] = await req.json();
+  const res: SimpleCrewResponse[] = await req.value.json();
   return res;
 }
 
@@ -24,7 +24,7 @@ export async function getCrew(id: string) {
   const token = useAuthStore.getState().key;
   if (token == null) return null;
 
-  const req = await fetch(
+  const req = await tryFetch(
     `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/${id}`,
     {
       headers: {
@@ -34,7 +34,7 @@ export async function getCrew(id: string) {
   );
 
   if (!req.ok) return null;
-  const res: CrewResponse = await req.json();
+  const res: CrewResponse = await req.value.json();
   return res;
 }
 
@@ -121,4 +121,154 @@ export async function join(
   if (!req.ok) return req;
   const res: SimpleCrewResponse = await req.value.json();
   return { ok: true, value: res };
+}
+
+export async function getInvites(crew: string): Promise<string[]> {
+  const token = useAuthStore.getState().key;
+  if (token == null) return [];
+
+  const req = await tryFetch(
+    `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/${crew}/invites`,
+    {
+      headers: {
+        Authorization: token
+      }
+    }
+  );
+
+  if (!req.ok) return [];
+  const res: string[] = await req.value.json();
+  return res;
+}
+
+export async function createInvite(crew: string): Promise<string | null> {
+  const token = useAuthStore.getState().key;
+  if (token == null) return null;
+
+  const req = await tryFetch(
+    `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/${crew}/invites`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: token
+      }
+    }
+  );
+
+  if (!req.ok) return null;
+  return await req.value.text();
+}
+
+export async function deleteInvite(
+  crew: string,
+  invite: string
+): Promise<boolean> {
+  const token = useAuthStore.getState().key;
+  if (token == null) return false;
+
+  const req = await tryFetch(
+    `${
+      import.meta.env.VITE_SLOP_CREW_SERVER
+    }api/crew/${crew}/invites/${invite}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: token
+      }
+    }
+  );
+  return req.ok;
+}
+
+export async function demote(
+  crew: string,
+  user: string
+): Promise<Result<null, string>> {
+  const token = useAuthStore.getState().key;
+  if (token == null) {
+    return {
+      ok: false,
+      error: "You must be logged in to demote a user"
+    };
+  }
+
+  const req = await tryFetch(
+    `${
+      import.meta.env.VITE_SLOP_CREW_SERVER
+    }api/crew/${crew}/demote?id=${user}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: token
+      }
+    }
+  );
+
+  if (!req.ok) return req;
+  return { ok: true, value: null };
+}
+
+export async function kick(
+  crew: string,
+  user: string
+): Promise<Result<null, string>> {
+  const token = useAuthStore.getState().key;
+  if (token == null) {
+    return { ok: false, error: "You must be logged in to kick a user" };
+  }
+
+  const req = await tryFetch(
+    `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/${crew}/kick?id=${user}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: token
+      }
+    }
+  );
+
+  if (!req.ok) return req;
+  return { ok: true, value: null };
+}
+
+export async function leave(crew: string): Promise<Result<null, string>> {
+  const token = useAuthStore.getState().key;
+  if (token == null) {
+    return { ok: false, error: "You must be logged in to leave a crew" };
+  }
+
+  const req = await tryFetch(
+    `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/${crew}/leave`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: token
+      }
+    }
+  );
+
+  if (!req.ok) return req;
+  return { ok: true, value: null };
+}
+
+export async function nukeItFromOrbit(
+  crew: string
+): Promise<Result<null, string>> {
+  const token = useAuthStore.getState().key;
+  if (token == null) {
+    return { ok: false, error: "You must be logged in to delete a crew" };
+  }
+
+  const req = await tryFetch(
+    `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/${crew}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: token
+      }
+    }
+  );
+
+  if (!req.ok) return req;
+  return { ok: true, value: null };
 }
