@@ -166,6 +166,10 @@ function CrewInner({ crew }: { crew: CrewResponse }) {
   const cachedMe = useAuthStore((state) => state.cachedMe);
   const me = crew.members.find((x) => x.id === cachedMe?.id);
   const members = crew.members.sort((a, b) => {
+    // super owner always goes first
+    if (a.id === crew.super_owner) return -1;
+    if (b.id === crew.super_owner) return 1;
+
     // owners go first
     if (a.owner && !b.owner) return -1;
     if (!a.owner && b.owner) return 1;
