@@ -124,7 +124,9 @@ function LeaveCrewButton({
   // This is implemented serverside as well
   const canLeaveMemberClause = me != null && crew.members.length > 1;
   const canLeaveOwnersClause = me != null && (owners.length > 1 || !me.owner);
-  const canLeave = canLeaveMemberClause && canLeaveOwnersClause;
+  const canLeaveSuperOwnerClause = me != null && crew.super_owner != me.id;
+  const canLeave =
+    canLeaveMemberClause && canLeaveOwnersClause && canLeaveSuperOwnerClause;
 
   let tooltip = "";
   if (!canLeaveMemberClause) {
@@ -133,6 +135,10 @@ function LeaveCrewButton({
 
   if (!canLeaveOwnersClause) {
     tooltip = "You're the only owner of this crew.";
+  }
+
+  if (!canLeaveSuperOwnerClause) {
+    tooltip = "You're the creator of this crew.";
   }
 
   return (
