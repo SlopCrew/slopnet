@@ -15,6 +15,18 @@
   --danger-inverse: #fff;
 }
 
+@media (prefers-color-scheme: dark) {
+  .tmp {
+    color: #ffffff;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .tmp {
+    color: #000000;
+  }
+}
+
 .currentAccount {
   align-items: center;
   gap: 0.5rem;

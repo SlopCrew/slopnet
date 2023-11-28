@@ -37,7 +37,7 @@ function parse(temp: string): React.ReactNode[] {
   function add(str: string) {
     if (currentColor == null) {
       spans.push(
-        <span style={{ color: "#ffffff" }} key={spans.length}>
+        <span className="tmp" key={spans.length}>
           {str}
         </span>
       );
