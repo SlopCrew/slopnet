@@ -1,6 +1,6 @@
 // Absolutely ~~abhorrent~~ wonderful regex made by Sylvie
 const colorRegex =
-  /(?:<(?:color=)?(?:#?(?<hex>[0-9a-fA-F]{6}|[0-9a-fA-F]{3}|[0-9a-fA-F]{8})|(?<name>\w+))>)/m;
+  /(?:<(?:color=)?(?:#(?<hex>[0-9a-fA-F]{6}|[0-9a-fA-F]{3}|[0-9a-fA-F]{8})|(?<name>\w+))>)/m;
 const spriteRegex = /<sprite.*?>/m;
 
 // https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html#supported-colors

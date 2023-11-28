@@ -43,7 +43,6 @@ function CrewInner({
         <select
           defaultValue={representingCrew ?? ""}
           onChange={async (e) => {
-            console.log(e.target.value);
             let crewId: string | null = e.target.value;
             if (crewId == "") crewId = null;
             await setRepresentingCrew(crewId);
