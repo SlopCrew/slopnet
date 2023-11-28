@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRequiredAuth } from "../../util";
 import { join } from "../../api/crew";
 import Important from "../../components/Important";
+import FakeTMP from "../../components/FakeTMP";
 
 function CrewInviteCode() {
   const navigate = useNavigate();
@@ -89,7 +90,9 @@ export default function Crews() {
                   {crews.map((crew) => (
                     <tr key={crew.id}>
                       <td>{crew.name}</td>
-                      <td>{crew.tag}</td>
+                      <td>
+                        <FakeTMP text={crew.tag} />
+                      </td>
                       <td>
                         <a href={`/crews/${crew.id}`} role="button">
                           View
