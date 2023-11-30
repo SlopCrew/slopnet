@@ -70,6 +70,38 @@ export async function create(
   return { ok: true, value: res };
 }
 
+export async function update(
+  crew: string,
+  name: string,
+  tag: string
+): Promise<Result<null, string>> {
+  const token = useAuthStore.getState().key;
+  if (token == null) {
+    return {
+      ok: false,
+      error: "You must be logged in to update a crew"
+    };
+  }
+
+  const req = await tryFetch(
+    `${import.meta.env.VITE_SLOP_CREW_SERVER}api/crew/${crew}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      },
+      body: JSON.stringify({
+        name,
+        tag
+      })
+    }
+  );
+
+  if (!req.ok) return req;
+  return { ok: true, value: null };
+}
+
 export async function promote(
   crew: string,
   user: string

@@ -5,7 +5,72 @@ import { useNavigate, useRevalidator } from "react-router-dom";
 import { CrewResponse, MeResponse } from "../../api/types";
 import HiddenCode from "../../components/HiddenCode";
 import { useRequiredAuth } from "../../util";
-import { createInvite, deleteInvite, nukeItFromOrbit } from "../../api/crew";
+import {
+  createInvite,
+  deleteInvite,
+  nukeItFromOrbit,
+  update
+} from "../../api/crew";
+import TMPInput from "../../components/TMPInput.tsx";
+import Important from "../../components/Important.tsx";
+
+function CrewUpdate({ crew }: { crew: CrewResponse }) {
+  const revalidator = useRevalidator();
+  const name = React.createRef<HTMLInputElement>();
+  const tag = React.createRef<HTMLInputElement>();
+
+  const [working, setWorking] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  return (
+    <section className="smolPadding">
+      <h2>Name & tag</h2>
+
+      {error != null && <Important type="danger" message={error} />}
+
+      <input
+        type="text"
+        ref={name}
+        defaultValue={crew.name}
+        placeholder="Crew name"
+        minLength={3}
+        maxLength={32}
+      />
+
+      <TMPInput
+        ref={tag}
+        defaultValue={crew.tag}
+        placeholder="Crew tag"
+        minLength={3}
+        maxLength={32}
+      />
+
+      <button
+        className="normalWidthButton"
+        disabled={working}
+        onClick={async () => {
+          const nameVal = name.current?.value;
+          const tagVal = tag.current?.value;
+          if (nameVal == null || tagVal == null) return;
+
+          setWorking(true);
+          setError(null);
+
+          const req = await update(crew.id, nameVal, tagVal);
+          setWorking(false);
+
+          if (!req.ok) {
+            setError(req.error);
+          } else {
+            revalidator.revalidate();
+          }
+        }}
+      >
+        Update
+      </button>
+    </section>
+  );
+}
 
 function CrewSettingsInner({
   crew,
@@ -22,6 +87,8 @@ function CrewSettingsInner({
   return (
     <>
       <h1>Crew settings</h1>
+
+      <CrewUpdate crew={crew} />
 
       <section className="smolPadding">
         <h2>Invites</h2>
